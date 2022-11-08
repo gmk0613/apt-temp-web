@@ -7,32 +7,62 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ 
 
 const navConfig = [
   {
-    title: 'dashboard',
+    title: '온도 현황',
+    path: '/tempStatus',
+    icon: icon('ic_dashboard'),
+  },
+  {
+    title: '사용자 리스트',
+    path: '/userMgmt',
+    icon: icon('ic_person'),
+  },
+  {
+    title: '사용 요청 승인',
+    path: '/userApprove',
+    icon: icon('ic_check'),
+  },
+  {
+    title: '아파트 설정',
+    path: '/optionSet',
+    icon: icon('ic_apt'),
+  },
+  {
+    title: '매니저 추가/삭제',
+    path: '/mamagerMgmt',
+    icon: icon('ic_manage'),
+  },
+  {
+    title: 'MQTT설정',
+    path: '/mqttSet',
+    icon: icon('ic_signal'),
+  },
+  {
+    title: 'dashboard/삭제',
     path: '/app',
     icon: icon('ic_analytics'),
   },
   {
-    title: 'user',
+    title: 'user/삭제',
     path: '/user',
     icon: icon('ic_user'),
   },
   {
-    title: 'product',
+    title: 'product/삭제',
     path: '/products',
     icon: icon('ic_cart'),
   },
   {
-    title: 'blog',
+    title: 'blog/삭제',
     path: '/blog',
     icon: icon('ic_blog'),
   },
   {
-    title: 'login',
+    title: 'login/삭제',
     path: '/login',
     icon: icon('ic_lock'),
   },
   {
-    title: 'Not found',
+    title: 'Not found/삭제',
     path: '/404',
     icon: icon('ic_disabled'),
   },

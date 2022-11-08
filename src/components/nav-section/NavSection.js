@@ -47,7 +47,7 @@ function NavItem({ item }) {
       <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
 
       <ListItemText disableTypography primary={title} />
-
+      
       {info && info}
     </StyledNavItem>
   );

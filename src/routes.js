@@ -11,6 +11,13 @@ import LoginPage from './views/account/LoginPage';
 import Page404 from './views/error/Page404';
 import ProductsPage from './views/products/ProductsPage';
 import DashboardAppPage from './views/dashboard/DashboardAppPage';
+// custom
+import TempStatusPage from './views/tempStatus/TempStatusPage';
+import UserApprovePage from './views/userApprove/UserApprovePage';
+import UserMgmtPage from './views/userMgmt/ManagerMgmtPage';
+import OptionSetPage from './views/optionSet/OptionSetPage';
+import ManagerMgmtPage from './views/managerMgmt/ManagerMgmtPage';
+import MqttSetPage from './views/mqttSet/MqttSetPage';
 
 // ----------------------------------------------------------------------
 
@@ -35,6 +42,12 @@ export default function Router() {
       <Routes>
         <Route exact path="/login" element={<LoginPage />} />
         <Route element={<DashboardLayout />}>
+          <Route path="/tempStatus" element={<TempStatusPage />} />
+          <Route path="/userMgmt" element={<UserMgmtPage />} />
+          <Route path="/userApprove" element={<UserApprovePage />} />
+          <Route path="/optionSet" element={<OptionSetPage />} />
+          <Route path="/mamagerMgmt" element={<ManagerMgmtPage />} />
+          <Route path="/mqttSet" element={<MqttSetPage />} />
           <Route path="/app" element={<DashboardAppPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/products" element={<ProductsPage />} />
