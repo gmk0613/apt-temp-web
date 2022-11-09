@@ -2162,6 +2162,20 @@
     "deepmerge" "^4.2.2"
     "svgo" "^2.8.0"
 
+"@svgr/webpack@^5.5.0":
+  "integrity" "sha512-cQ/AsnBkXPkEK8cLbv4Dm7JGXq2XrumKnL1dRpJD9rIO2fTIlJI9a1uCciYG1F2aUsox/hJQyNGbt3soDxSRkA=="
+  "resolved" "https://registry.npmjs.org/@svgr/webpack/-/webpack-6.5.1.tgz"
+  "version" "6.5.1"
+  dependencies:
+    "@babel/core" "^7.19.6"
+    "@babel/plugin-transform-react-constant-elements" "^7.18.12"
+    "@babel/preset-env" "^7.19.4"
+    "@babel/preset-react" "^7.18.6"
+    "@babel/preset-typescript" "^7.18.6"
+    "@svgr/core" "^6.5.1"
+    "@svgr/plugin-jsx" "^6.5.1"
+    "@svgr/plugin-svgo" "^6.5.1"
+
 "@svgr/webpack@^6.5.0":
   "integrity" "sha512-rM/Z4pwMhqvAXEHoHIlE4SeTb0ToQNmJuBdiHwhP2ZtywyX6XqrgCv2WX7K/UCgNYJgYbekuylgyjnuLUHTcZQ=="
   "resolved" "https://registry.npmjs.org/@svgr/webpack/-/webpack-6.5.0.tgz"
