@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
+import jwt from 'jwt-decode';
 import { ERROR_TYPE } from '../constants/consts';
 import { API_URL, EXCEPT_CHECK_TOKEN_LIST } from '../constants/api';
 
