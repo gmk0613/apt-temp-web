@@ -27,12 +27,11 @@ export default function Router() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const account = useSelector((state) => state.account);
-  console.log('routes.js account', account);
+  const userId = useSelector((state) => state.account.userId);
   console.log('routes.js location', location);
+  console.log('routes.js userId', userId);
   useEffect(() => {
-    console.log('routes.js userId', account.userId);
-    if (account.userId === '' && location.pathname !== '/login') {
+    if (userId === '' && location.pathname !== '/login') {
       navigate('/login');
     }
   });

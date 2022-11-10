@@ -37,6 +37,11 @@ const accountSlice = createSlice({
       state.userId = data.userId;
       state.userRole = data.userRole;
     },
+    testRefresh: (state, action) => {
+      const data = action.data;
+      state.refreshToken = data.refreshToken;
+      console.log("testRefresh state", data.refreshToken);
+    },
   },
   extraReducers: {},
 });

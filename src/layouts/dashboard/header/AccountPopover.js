@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
-import account from '../../../_mock/account';
+// import account from '../../../_mock/account';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +28,9 @@ export default function AccountPopover() {
     navigate('/login');
   };
 
+  const userId = useSelector((state) => { return state.account.userId });
+  const userRole = useSelector((state) => { return state.account.userRole });
+
   return (
     <>
       <IconButton
@@ -47,7 +50,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar>M</Avatar>
+        <Avatar>{userRole === 'Manager' ? 'M' : 'A'}</Avatar>
       </IconButton>
 
       <Popover
@@ -71,10 +74,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {userId}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.role}
+            {userRole}
           </Typography>
         </Box>
 

@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 // @mui
 import {
   Card,
@@ -148,7 +149,10 @@ export default function UserPage() {
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
+  const dispatch = useDispatch();
+
   return (
+
     <>
       <Helmet>
         <title> 사용 요청 승인 </title>
@@ -159,7 +163,7 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             User
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => dispatch({type:'account/testRefresh', data:{refreshToken:'aaaaaa'}})}>
             New User
           </Button>
         </Stack>
