@@ -7,10 +7,6 @@ export const API_URL = {
     LOGIN: `${BASE_PATH}/login`,
     REFRESH: `${BASE_PATH}/login`,
   },
-  TEST: {
-    PING: `${BASE_PATH}/ping`,
-    PING_PARAM: (id) => `${BASE_PATH}/ping/${id}`,
-  },
 };
 
-export const EXCEPT_CHECK_TOKEN_LIST = [API_URL.ACCOUNT.LOGIN, API_URL.TEST.PING, API_URL.TEST.PING_PARAM];
+export const EXCEPT_CHECK_TOKEN_LIST = [API_URL.ACCOUNT.LOGIN];

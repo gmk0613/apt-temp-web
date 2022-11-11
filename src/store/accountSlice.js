@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { API_URL } from 'src/constants/api';
+import apiHelper from 'src/utils/apiHelper';
 
 const initialStateValue = {
-  userId: '',
-  userRole: '',
-  accessToken: '',
-  refreshToken: '',
+  userId: null,
+  userRole: null,
+  accessToken: null,
+  refreshToken: null,
 };
 
 const accountSlice = createSlice({
@@ -19,31 +21,30 @@ const accountSlice = createSlice({
       state.refreshToken = data.refreshToken;
     },
     logout: (state) => {
-      state.userId = '';
-      state.userRole = '';
-      state.accessToken = '';
-      state.refreshToken = '';
+      state.userId = null;
+      state.userRole = null;
+      state.accessToken = null;
+      state.refreshToken = null;
     },
     updateSession: (state, action) => {
+      // 어떤 정보를 업데이트할지 정해지지 않음
       console.log("updateSession state", state);
       console.log("updateSession action", action);
     },
-    refresh: (state) => {
-      console.log("refresh state", state);
-      return true;
+    refresh: async (state) => {
+      const res = await apiHelper.post(API_URL.ACCOUNT.REFRESH, {});
+      if(res.errorCode === 0){
+        state.accessToken = res.data.accessToken;
+        return true;
+      }
+      return false;
     },
-    test: (state, action) => {
+    refreshAll: (state, action) => {
       const data = action.data;
-      state.userId = data.userId;
-      state.userRole = data.userRole;
-    },
-    testRefresh: (state, action) => {
-      const data = action.data;
+      state.accessToken = data.accessToken;
       state.refreshToken = data.refreshToken;
-      console.log("testRefresh state", data.refreshToken);
     },
   },
-  extraReducers: {},
 });
 
 export default accountSlice;

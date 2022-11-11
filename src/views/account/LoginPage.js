@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 
 // components
 import apiHelper from 'src/utils/apiHelper';
+import appHistory from 'src/appHistory';
 import Iconify from '../../components/iconify';
 // @mui
 // sections
@@ -48,13 +49,15 @@ export default function LoginPage() {
         data: {
           userId: loginId,
           userRole: 'Manager',
+          accessToken: 'aToken',
+          refreshToken: 'rToken',
         },
       });
-      navigate('/app');
+      appHistory.push('/app');
     }
   }, [login]);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if(loginPw === ''){
       alert("패스워드를 입력하세요.");
       return;
@@ -64,7 +67,8 @@ export default function LoginPage() {
       pw: loginPw
     };
 
-    // const res = apiHelper.get("/login", param);
+    // login api연동
+    // const res = await apiHelper.get('https://jsonplaceholder.typicode.com/users', {});
     // console.log(res);
     if(true) {
       setLogin(true);

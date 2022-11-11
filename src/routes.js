@@ -31,7 +31,7 @@ export default function Router() {
   console.log('routes.js location', location);
   console.log('routes.js userId', userId);
   useEffect(() => {
-    if (userId === '' && location.pathname !== '/login') {
+    if (!userId && location.pathname !== '/login') {
       navigate('/login');
     }
   });
