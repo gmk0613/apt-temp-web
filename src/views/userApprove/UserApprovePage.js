@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
 // @mui
 import {
   Card,
@@ -32,16 +31,17 @@ import Scrollbar from '../../components/scrollbar';
 import { UserListHead, UserListToolbar } from './component';
 
 // mock
-import USERLIST from '../../_mock/user';
+import USERLIST from '../../_mock/userApprove';
 
 // ----------------------------------------------------------------------
+
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'userId', label: '아이디', alignRight: false },
+  { id: 'userName', label: '이름', alignRight: false },
+  { id: 'aptDongHo', label: '동/호수', alignRight: false },
+  { id: 'thmoSn', label: '보일러SN', alignRight: false },
+  { id: 'roomCnt', label: '방개수', alignRight: false },
+  { id: 'approveBtn', label: '승인', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -70,63 +70,35 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    const newArray = array.filter((_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    const newArray = array.filter((_user) => _user.userName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
     return newArray;
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function UserPage() {
-  const [open, setOpen] = useState(null);
-
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
-  const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [userList, setUserList] = useState(USERLIST);
+  const [isApprove, setIsApprove] = useState(-1);
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
+  useEffect(() => {
+    const getUserList = async () => {
+      // const result = await apiHelper.get("/userList");
+      const result = USERLIST;
+      console.log("getUserList", result);
+      setUserList(result);
+    }
+    getUserList();
+  }, [isApprove]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -143,13 +115,15 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const handleApprove = async (e, params) => {
+    console.log("params", params);
+    // const res = await apiHelper.patch("/userApprove", {userNo: params.userNo});
+    setIsApprove(params.userNo);
+  }
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
   const isNotFound = !filteredUsers.length && !!filterName;
-
-  const dispatch = useDispatch();
 
   return (
 
@@ -161,15 +135,12 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            사용 요청 승인
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => dispatch({type:'account/testRefresh', data:{refreshToken:'aaaaaa'}})}>
-            New User
-          </Button>
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -178,45 +149,24 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
+                  rowCount={userList.length}
                   onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                    const { userNo, userId, userName, aptDongHo, thmoSn, roomCnt } = row;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
-
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-
-                        <TableCell align="left">{company}</TableCell>
-
-                        <TableCell align="left">{role}</TableCell>
-
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-
-                        <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
-                        </TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
+                      <TableRow hover key={userNo} tabIndex={-1}>
+                        <TableCell align="left">{userId}</TableCell>
+                        <TableCell align="left">{userName}</TableCell>
+                        <TableCell align="left">{aptDongHo}</TableCell>
+                        <TableCell align="left">{thmoSn}</TableCell>
+                        <TableCell align="left">{roomCnt}</TableCell>
+                        <TableCell align="center">
+                          <Button variant="contained" onClick={(e) => handleApprove(e, row)}>
+                            승인
+                          </Button>
                         </TableCell>
                       </TableRow>
                     );
@@ -238,13 +188,12 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            결과를 ㅣ찾을 수 없습니다
                           </Typography>
 
                           <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
+                            <strong>&quot;{filterName}&quot;</strong> 에 대한 결과가 없습니다.
+                            <br /> 입력한 값을 확인해주세요.
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -256,9 +205,9 @@ export default function UserPage() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 20]}
             component="div"
-            count={USERLIST.length}
+            count={userList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -266,35 +215,6 @@ export default function UserPage() {
           />
         </Card>
       </Container>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }
