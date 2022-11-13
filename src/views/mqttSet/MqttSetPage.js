@@ -5,149 +5,194 @@ import {
   Card,
   Table,
   Stack,
-  Paper,
-  Avatar,
   Button,
-  Popover,
-  Checkbox,
   TableRow,
   MenuItem,
   TableBody,
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
-  TablePagination,
+  Grid,
+  TextField,
+  Select,
+  FormControl,
+  InputLabel,
+  TableHead,
 } from '@mui/material';
+
+// mock
+import mqttLists from 'src/_mock/mqttList';
+
 // components
-import Label from '../../components/label';
-import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
 // sections
- import { } from './component';
-// mock
-import USERLIST from '../../_mock/user';
+// import { } from './component';
 
-// ----------------------------------------------------------------------
+const aptList = [
+  { label: 'AptA', value: 'AptA_v'},
+  { label: 'AptB', value: 'AptB_v'}
+]
+
+const mqttList = [
+  { label: 'MqttA', value: 'MqttA_v'},
+  { label: 'MqttB', value: 'MqttB_v'}
+]
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'mqttNo', label: 'No', align: 'left' },
+  { id: 'mqttIp', label: 'MQTT IP', align: 'left' },
+  { id: 'mqttPort', label: 'MQTT PORT', align: 'left' },
+  { id: '', label: '' },
 ];
 
-// ----------------------------------------------------------------------
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    const newArray = array.filter((_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-    return newArray;
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
-
 export default function UserPage() {
-  const [open, setOpen] = useState(null);
+  const [apt, setApt] = useState();
+  const [mqtt, setMqtt] = useState();
 
-  const [page, setPage] = useState(0);
+  const handleAptChange = (e, param) => {
+    setApt(e.target.value);
+  }
 
-  const [order, setOrder] = useState('asc');
+  const handleMqttChange = (e, param) => {
+    setMqtt(e.target.value);
+  }
 
-  const [selected, setSelected] = useState([]);
+  const handleDelete = (e, param) => {
+    console.log(e);
+    console.log(param);
+  }
 
-  const [orderBy, setOrderBy] = useState('name');
-
-  const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && !!filterName;
+  const handleUpdate = (e) => {
+    console.log(e);
+  }
 
   return (
     <>
-      MqttSet
+      <Helmet>
+        <title> MQTT 설정 </title>
+      </Helmet>
+
+      <Container>
+        <Typography variant="h4" sx={{ mb: 5 }}>
+          MQTT 설정
+        </Typography>
+
+        <Stack spacing={3}>
+
+          <Card sx={{p: 3}}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={3} lg={2}>아파트 이름</Grid>
+              <Grid item xs={12} md={9} lg={10}>
+                <FormControl fullWidth>
+                  <InputLabel id="apt-select">아파트</InputLabel>
+                  <Select
+                    labelId="apt-select"
+                    id="apt-selectbox"
+                    value={apt}
+                    onChange={handleAptChange}
+                    label="아파트"
+                  >
+                    {aptList.map((apt) => (
+                      <MenuItem value={apt.value}>{apt.label}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={3} sx={{mt: 2}}>
+              <Grid item xs={12} md={3} lg={2}>MQTT Broker</Grid>
+              <Grid item xs={12} md={9} lg={10}>
+                <FormControl fullWidth>
+                  <InputLabel id="mqtt-select">Broker</InputLabel>
+                  <Select
+                    labelId="mqtt-select"
+                    id="mqtt-selectbox"
+                    value={mqtt}
+                    label="Broker"
+                    onChange={handleMqttChange}
+                  >
+                    {mqttList.map((mqtt) => (
+                      <MenuItem value={mqtt.value}>{mqtt.label}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <Grid sx={{mt: 2}} textAlign={'right'}>
+              <Button variant="contained" onClick={handleUpdate}>
+                MQTT 정보 갱신
+              </Button>
+            </Grid>
+          </Card>
+
+          <Card sx={{p: 3}}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={3} lg={2}>MQTT Broker IP</Grid>
+              <Grid item xs={12} md={9} lg={10}>
+                <FormControl fullWidth>
+                  <TextField id="outlined-basic" variant="outlined" label="Broker IP" />
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={3} sx={{mt: 2}}>
+              <Grid item xs={12} md={3} lg={2}>MQTT Broker Port</Grid>
+              <Grid item xs={12} md={9} lg={10}>
+                <FormControl fullWidth>
+                  <TextField id="outlined-basic" variant="outlined" label="Broker Port" />
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <Grid sx={{mt: 2}} textAlign={'right'}>
+              <Button variant="contained" onClick={handleUpdate}>
+                MQTT 서버 추가
+              </Button>
+            </Grid>
+          </Card>
+
+          <Card sx={{p: 3}}>
+            <Typography variant="h6" sx={{ mb: 1 }}>
+              MQTT Broker 리스트
+            </Typography>
+            <Scrollbar>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    {TABLE_HEAD.map((header) => (
+                      <TableCell>
+                        {header.label}
+                      </TableCell>
+                    ))}
+                  </TableHead>
+                  <TableBody>
+                    {mqttLists.map((row) =>{
+                      const { mqttNo, mqttIp, mqttPort } = row;
+
+                      return (
+                        <TableRow hover key={mqttNo} tabIndex={-1}>
+                          <TableCell align="left">{mqttNo}</TableCell>
+                          <TableCell align="left">{mqttIp}</TableCell>
+                          <TableCell align="left">{mqttPort}</TableCell>
+                          <TableCell align="center">
+                            <Button color='error' variant="contained" onClick={(e) => handleDelete(e, row)}>
+                              삭제
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Scrollbar>
+          </Card>
+        </Stack>
+
+      </Container>
     </>
   );
 }

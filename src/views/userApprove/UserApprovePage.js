@@ -6,17 +6,12 @@ import {
   Table,
   Stack,
   Paper,
-  Avatar,
   Button,
-  Popover,
-  Checkbox,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
   TablePagination,
 } from '@mui/material';
@@ -33,18 +28,14 @@ import { UserListHead, UserListToolbar } from './component';
 // mock
 import USERLIST from '../../_mock/userApprove';
 
-// ----------------------------------------------------------------------
-
 const TABLE_HEAD = [
   { id: 'userId', label: '아이디', alignRight: false },
   { id: 'userName', label: '이름', alignRight: false },
   { id: 'aptDongHo', label: '동/호수', alignRight: false },
   { id: 'thmoSn', label: '보일러SN', alignRight: false },
   { id: 'roomCnt', label: '방개수', alignRight: false },
-  { id: 'approveBtn', label: '승인', alignRight: false },
+  { id: '', label: '' },
 ];
-
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -83,17 +74,16 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [userList, setUserList] = useState(USERLIST);
-  const [isApprove, setIsApprove] = useState(-1);
+
+  const getUserList = async () => {
+    const result = await apiHelper.get("/userList");
+    console.log("getUserList", USERLIST);
+    setUserList(USERLIST);
+  }
 
   useEffect(() => {
-    const getUserList = async () => {
-      // const result = await apiHelper.get("/userList");
-      const result = USERLIST;
-      console.log("getUserList", result);
-      setUserList(result);
-    }
     getUserList();
-  }, [isApprove]);
+  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -117,8 +107,9 @@ export default function UserPage() {
 
   const handleApprove = async (e, params) => {
     console.log("params", params);
-    // const res = await apiHelper.patch("/userApprove", {userNo: params.userNo});
-    setIsApprove(params.userNo);
+    // 컨펌창
+      const res = await apiHelper.patch("/userApprove", {userNo: params.userNo});
+      getUserList();
   }
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
