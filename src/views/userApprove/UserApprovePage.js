@@ -117,7 +117,6 @@ export default function UserPage() {
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
-
     <>
       <Helmet>
         <title> 사용 요청 승인 </title>
