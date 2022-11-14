@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import apiHelper from 'src/utils/apiHelper';
 // @mui
 import {
   Card,
@@ -29,14 +30,14 @@ import Scrollbar from '../../components/scrollbar';
 // sections
 // import { } from './component';
 
-const aptList = [
+const aptSelectListMock = [
   { label: 'AptA', value: 'AptA_v'},
   { label: 'AptB', value: 'AptB_v'}
 ]
 
-const mqttList = [
-  { label: 'MqttA', value: 'MqttA_v'},
-  { label: 'MqttB', value: 'MqttB_v'}
+const mqttSelectListMock = [
+  { label: 'Mqtt BrokerA', value: 'Mqtt_BrokerA_v'},
+  { label: 'Mqtt BrokerB', value: 'Mqtt_BrokerB_v'}
 ]
 
 const TABLE_HEAD = [
@@ -47,24 +48,64 @@ const TABLE_HEAD = [
 ];
 
 export default function UserPage() {
-  const [apt, setApt] = useState();
-  const [mqtt, setMqtt] = useState();
+  
+  const [aptSelectList, setAptSelectList] = useState([]);
+  const [mqttSelectList, setMqttSelectList] = useState([]);
+  const [selects, setSelects] = useState({
+    apt: '',
+    mqtt: ''
+  });
+  const [inputs, setInputs] = useState({
+    mqttIp: '',
+    mqttPort: ''
+  });
 
-  const handleAptChange = (e, param) => {
-    setApt(e.target.value);
+  const { apt, mqtt } = selects;
+  const { mqttIp, mqttPort } = inputs;
+
+  const getAptSelectList = async () => {
+    // const res = await apiHelper.get();
+    setAptSelectList(aptSelectListMock);
   }
 
-  const handleMqttChange = (e, param) => {
-    setMqtt(e.target.value);
+  const getMqttSelectList = async () => {
+    // const res = await apiHelper.get();
+    setMqttSelectList(mqttSelectListMock);
   }
 
-  const handleDelete = (e, param) => {
+  useEffect(()=>{
+    getAptSelectList();
+    getMqttSelectList();
+  }, []);
+
+  const handleInputsChange = (e) => {
+    const { name, value } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value
+    });
+  };
+
+  const handleSelectsChange = (e) => {
+    const { name, value } = e.target;
+    setSelects({
+      ...selects,
+      [name]: value
+    });
+  }
+
+  const handleMqttUpdate = (e) => {
+    console.log(e);
+    // const res = await apiHelper.patch();
+  }
+
+  const handleMqttAdd = (e) => {
+    console.log(e);
+  }
+
+  const handleMqttDelete = (e, param) => {
     console.log(e);
     console.log(param);
-  }
-
-  const handleUpdate = (e) => {
-    console.log(e);
   }
 
   return (
@@ -89,11 +130,12 @@ export default function UserPage() {
                   <Select
                     labelId="apt-select"
                     id="apt-selectbox"
+                    name="apt"
                     value={apt}
-                    onChange={handleAptChange}
+                    onChange={handleSelectsChange}
                     label="아파트"
                   >
-                    {aptList.map((apt) => (
+                    {aptSelectList.map((apt) => (
                       <MenuItem value={apt.value}>{apt.label}</MenuItem>
                     ))}
                   </Select>
@@ -109,11 +151,12 @@ export default function UserPage() {
                   <Select
                     labelId="mqtt-select"
                     id="mqtt-selectbox"
+                    name="mqtt"
                     value={mqtt}
                     label="Broker"
-                    onChange={handleMqttChange}
+                    onChange={handleSelectsChange}
                   >
-                    {mqttList.map((mqtt) => (
+                    {mqttSelectList.map((mqtt) => (
                       <MenuItem value={mqtt.value}>{mqtt.label}</MenuItem>
                     ))}
                   </Select>
@@ -122,7 +165,7 @@ export default function UserPage() {
             </Grid>
 
             <Grid sx={{mt: 2}} textAlign={'right'}>
-              <Button variant="contained" onClick={handleUpdate}>
+              <Button variant="contained" onClick={handleMqttUpdate}>
                 MQTT 정보 갱신
               </Button>
             </Grid>
@@ -133,7 +176,7 @@ export default function UserPage() {
               <Grid item xs={12} md={3} lg={2}>MQTT Broker IP</Grid>
               <Grid item xs={12} md={9} lg={10}>
                 <FormControl fullWidth>
-                  <TextField id="outlined-basic" variant="outlined" label="Broker IP" />
+                  <TextField id="mqttIp" name="mqttIp" variant="outlined" label="Broker IP" value={mqttIp} onChange={handleInputsChange}/>
                 </FormControl>
               </Grid>
             </Grid>
@@ -142,13 +185,13 @@ export default function UserPage() {
               <Grid item xs={12} md={3} lg={2}>MQTT Broker Port</Grid>
               <Grid item xs={12} md={9} lg={10}>
                 <FormControl fullWidth>
-                  <TextField id="outlined-basic" variant="outlined" label="Broker Port" />
+                  <TextField id="mqttPort" name="mqttPort" variant="outlined" label="Broker Port" value={mqttPort} onChange={handleInputsChange}/>
                 </FormControl>
               </Grid>
             </Grid>
 
             <Grid sx={{mt: 2}} textAlign={'right'}>
-              <Button variant="contained" onClick={handleUpdate}>
+              <Button variant="contained" onClick={handleMqttAdd}>
                 MQTT 서버 추가
               </Button>
             </Grid>
@@ -169,7 +212,7 @@ export default function UserPage() {
                     ))}
                   </TableHead>
                   <TableBody>
-                    {mqttLists.map((row) =>{
+                    {mqttLists.map((row) => {
                       const { mqttNo, mqttIp, mqttPort } = row;
 
                       return (
@@ -178,7 +221,7 @@ export default function UserPage() {
                           <TableCell align="left">{mqttIp}</TableCell>
                           <TableCell align="left">{mqttPort}</TableCell>
                           <TableCell align="center">
-                            <Button color='error' variant="contained" onClick={(e) => handleDelete(e, row)}>
+                            <Button color='error' variant="contained" onClick={(e) => handleMqttDelete(e, row)}>
                               삭제
                             </Button>
                           </TableCell>
