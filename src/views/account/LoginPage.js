@@ -58,22 +58,22 @@ export default function LoginPage() {
   }, [login]);
 
   const handleClick = async () => {
-    if(loginPw === ''){
-      alert("패스워드를 입력하세요.");
+    if (loginPw === '') {
+      alert('패스워드를 입력하세요.');
       return;
     }
     const param = {
       id: loginId,
-      pw: loginPw
+      pw: loginPw,
     };
 
     // login api연동
     // const res = await apiHelper.get('https://jsonplaceholder.typicode.com/users', {});
     // console.log(res);
-    if(true) {
+    if (true) {
       setLogin(true);
-    }else{
-      alert("접근불가");
+    } else {
+      alert('접근불가');
     }
   };
 
@@ -82,7 +82,7 @@ export default function LoginPage() {
       <StyledRoot>
         <Container maxWidth="sm">
           <StyledContent>
-            <img src="/assets/logo.svg" alt='LOGO'/>
+            <img src="/assets/logo.svg" alt="LOGO" />
             <Typography variant="h4" gutterBottom>
               Sign in
             </Typography>

@@ -14,7 +14,7 @@ import DashboardAppPage from './views/dashboard/DashboardAppPage';
 // custom
 import TempStatusPage from './views/tempStatus/TempStatusPage';
 import UserApprovePage from './views/userApprove/UserApprovePage';
-import UserMgmtPage from './views/userMgmt/ManagerMgmtPage';
+import UserMgmtPage from './views/userMgmt/UserMgmtPage';
 import OptionSetPage from './views/optionSet/OptionSetPage';
 import ManagerMgmtPage from './views/managerMgmt/ManagerMgmtPage';
 import MqttSetPage from './views/mqttSet/MqttSetPage';

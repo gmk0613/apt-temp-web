@@ -28,12 +28,12 @@ const accountSlice = createSlice({
     },
     updateSession: (state, action) => {
       // 어떤 정보를 업데이트할지 정해지지 않음
-      console.log("updateSession state", state);
-      console.log("updateSession action", action);
+      console.log('updateSession state', state);
+      console.log('updateSession action', action);
     },
     refresh: async (state) => {
       const res = await apiHelper.post(API_URL.ACCOUNT.REFRESH, {});
-      if(res.errorCode === 0){
+      if (res.errorCode === 0) {
         state.accessToken = res.data.accessToken;
         return true;
       }

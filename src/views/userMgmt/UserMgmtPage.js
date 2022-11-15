@@ -27,9 +27,9 @@ import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
 // sections
-import { ManagerListHead, ManagerListToolbar } from './component';
+import { UserListHead, UserListToolbar, UserDialog } from './component';
 // mock
-import MANAGERLIST from '../../_mock/manager';
+import USERLIST from '../../_mock/user';
 
 // ----------------------------------------------------------------------
 
@@ -77,6 +77,10 @@ function applySortFilter(array, comparator, query) {
 export default function UserPage() {
   const [open, setOpen] = useState(null);
 
+  const [dialog, setDialog] = useState(false);
+
+  const [user, setUser] = useState(null);
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -89,7 +93,8 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleOpenMenu = (event) => {
+  const handleOpenMenu = (event, user) => {
+    setUser(user);
     setOpen(event.currentTarget);
   };
 
@@ -117,32 +122,43 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - MANAGERLIST.length) : 0;
+  const modifyUser = () => {
+    console.log('test');
+    setDialog(true);
+  };
 
-  const filteredUsers = applySortFilter(MANAGERLIST, getComparator(order, orderBy), filterName);
+  const deleteUser = () => {};
+
+  const closeDialog = () => {
+    setDialog(false);
+  };
+
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+
+  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
     <>
       <Helmet>
-        <title> Manager | Minimal UI </title>
+        <title> User | Minimal UI </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Manager
+            User
           </Typography>
         </Stack>
 
         <Card>
-          <ManagerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <ManagerListHead
+                <UserListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -175,7 +191,7 @@ export default function UserPage() {
                         <TableCell align="left">{phoneNumber}</TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                          <IconButton size="large" color="inherit" onClick={(e) => handleOpenMenu(e, row)}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -219,7 +235,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={MANAGERLIST.length}
+            count={USERLIST.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -227,6 +243,8 @@ export default function UserPage() {
           />
         </Card>
       </Container>
+
+      <UserDialog dialog={dialog} user={user} closeDialog={closeDialog} />
 
       <Popover
         open={Boolean(open)}
@@ -247,12 +265,12 @@ export default function UserPage() {
         }}
       >
         <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} onClick={modifyUser} />
           Edit
         </MenuItem>
 
         <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} onClick={deleteUser} />
           Delete
         </MenuItem>
       </Popover>
