@@ -21,7 +21,8 @@ import {
   TablePagination,
   TableHead,
   TextField,
-  FormControl
+  FormControl,
+  Grid
 } from '@mui/material';
 // components
 import Label from '../../components/label';
@@ -57,32 +58,161 @@ export default function UserPage() {
             아파트 설정
           </Typography>
         </Stack>
+        <Stack spacing={3}>
+          <Card sx={{p: 3}}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={3} lg={2}>MQTT Broker IP</Grid>
+              <Grid item xs={12} md={9} lg={10}>
+                <FormControl fullWidth>
+                  <TextField id="mqttIp" name="mqttIp" variant="outlined" label="Broker IP"/>
+                </FormControl>
+              </Grid>
+            </Grid>
 
-        <Scrollbar>
-          <TableContainer>
-            <Table>
-              <TableHead root>
-                <TableCell>a</TableCell>
-                <TableCell>b</TableCell>
-              </TableHead>
-              <TableBody>
-                <TableRow hover tabIndex={-1}>
-                  <TableCell>
-                  <FormControl>
-                    <TextField id="a" name="a" variant="outlined" label="a"/>
-                  </FormControl>
-                  </TableCell>
-                  <TableCell>bb</TableCell>
-                </TableRow>
-                <TableRow hover tabIndex={-1}>
-                  <TableCell>aaa</TableCell>
-                  <TableCell>bbb</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+            <Grid container spacing={3} sx={{mt: 2}}>
+              <Grid item xs={12} md={3} lg={2}>MQTT Broker Port</Grid>
+              <Grid item xs={12} md={9} lg={10}>
+                <FormControl fullWidth>
+                  <TextField id="mqttPort" name="mqttPort" variant="outlined" label="Broker Port"/>
+                </FormControl>
+              </Grid>
+            </Grid>
 
+            <Grid container spacing={3} sx={{mt: 2}}>
+              <Grid item xs={12} md={3} lg={2}>MQTT Broker Port</Grid>
+              <Grid item xs={12} md={9} lg={10}>
+                <FormControl fullWidth>
+                  <TextField id="mqttPort" name="mqttPort" variant="outlined" label="Broker Port"/>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Card>
+
+          <Card sx={{p: 3}}>
+            <Grid container spacing={3} sx={{mt: 2}}>
+              <Grid item xs={12} md={3} lg={2}>동</Grid>
+              <Grid item xs={12} md={9} lg={10}>
+                <FormControl fullWidth>
+                  <TextField id="mqttPort" name="mqttPort" variant="outlined" label="Ex) 101"/>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Scrollbar>
+              <TableContainer>
+                <Table>
+                  <TableBody>
+                    <TableRow hover tabIndex={-1}>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow hover tabIndex={-1}>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                      <TableCell>
+                        <FormControl>
+                          <TextField id="a" name="a" variant="outlined" size="small"/>
+                        </FormControl>
+                      </TableCell>
+                    </TableRow>
+                    
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Scrollbar>
+          </Card>
+        </Stack>
       </Container>
     </>
   );
