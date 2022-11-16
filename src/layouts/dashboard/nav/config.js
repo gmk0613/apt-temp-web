@@ -23,7 +23,7 @@ const navConfig = [
   },
   {
     title: '아파트 설정',
-    path: '/optionSet',
+    path: '/aptSet',
     icon: icon('ic_apt'),
   },
   {

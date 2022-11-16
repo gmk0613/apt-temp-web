@@ -34,18 +34,28 @@ import Scrollbar from '../../components/scrollbar';
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
-];
+export default function AptSetPage() {
 
+  const [inputs, setInputs] = useState({
+    aptNm: '',
+    aptAddress: '',
+    aptNumber: '',
+    aptDong: ''
+  });
 
-export default function UserPage() {
+  const { aptNm, aptAddress, aptNumber, aptDong } = inputs;
 
+  const handleInputsChange = (e) => {
+    const { name, value } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value
+    });
+  };
+
+  const handleAptSave = (e) => {
+    console.log(e);
+  }
 
   return (
     <>
@@ -61,39 +71,39 @@ export default function UserPage() {
         <Stack spacing={3}>
           <Card sx={{p: 3}}>
             <Grid container spacing={3}>
-              <Grid item xs={12} md={3} lg={2}>MQTT Broker IP</Grid>
+              <Grid item xs={12} md={3} lg={2}>아파트 이름</Grid>
               <Grid item xs={12} md={9} lg={10}>
                 <FormControl fullWidth>
-                  <TextField id="mqttIp" name="mqttIp" variant="outlined" label="Broker IP"/>
+                  <TextField id="aptNm" name="aptNm" variant="outlined" label="아파트 이름" value={aptNm} onChange={handleInputsChange}/>
                 </FormControl>
               </Grid>
             </Grid>
 
             <Grid container spacing={3} sx={{mt: 2}}>
-              <Grid item xs={12} md={3} lg={2}>MQTT Broker Port</Grid>
+              <Grid item xs={12} md={3} lg={2}>주소</Grid>
               <Grid item xs={12} md={9} lg={10}>
                 <FormControl fullWidth>
-                  <TextField id="mqttPort" name="mqttPort" variant="outlined" label="Broker Port"/>
+                  <TextField id="aptAddress" name="aptAddress" variant="outlined" label="주소" value={aptAddress} onChange={handleInputsChange}/>
                 </FormControl>
               </Grid>
             </Grid>
 
             <Grid container spacing={3} sx={{mt: 2}}>
-              <Grid item xs={12} md={3} lg={2}>MQTT Broker Port</Grid>
+              <Grid item xs={12} md={3} lg={2}>대표 관리실 전화번호</Grid>
               <Grid item xs={12} md={9} lg={10}>
                 <FormControl fullWidth>
-                  <TextField id="mqttPort" name="mqttPort" variant="outlined" label="Broker Port"/>
+                  <TextField id="aptNumber" name="aptNumber" variant="outlined" label="대표 관리실 전화번호" value={aptNumber} onChange={handleInputsChange}/>
                 </FormControl>
               </Grid>
             </Grid>
           </Card>
 
           <Card sx={{p: 3}}>
-            <Grid container spacing={3} sx={{mt: 2}}>
-              <Grid item xs={12} md={3} lg={2}>동</Grid>
-              <Grid item xs={12} md={9} lg={10}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={3} lg={1}>동</Grid>
+              <Grid item xs={12} md={9} lg={11}>
                 <FormControl fullWidth>
-                  <TextField id="mqttPort" name="mqttPort" variant="outlined" label="Ex) 101"/>
+                  <TextField id="aptDong" name="aptDong" variant="outlined" label="Ex) 101" value={aptDong} onChange={handleInputsChange}/>
                 </FormControl>
               </Grid>
             </Grid>
@@ -154,64 +164,24 @@ export default function UserPage() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow hover tabIndex={-1}>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                    </TableRow>
-                    
                   </TableBody>
                 </Table>
               </TableContainer>
             </Scrollbar>
+            <Grid sx={{mt: 2}} textAlign={'right'}>
+              <Button variant="contained" onClick={handleAptSave}>
+                정보저장
+              </Button>
+            </Grid>
           </Card>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3} lg={2}>층 수</Grid>
+            <Grid item xs={12} md={9} lg={10}>
+              <FormControl fullWidth>
+                <TextField id="aptNm" name="aptNm" variant="outlined" label="아파트 이름" value={aptNm} onChange={handleInputsChange}/>
+              </FormControl>
+            </Grid>
+          </Grid>
         </Stack>
       </Container>
     </>

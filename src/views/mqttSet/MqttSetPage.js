@@ -47,7 +47,7 @@ const TABLE_HEAD = [
   { id: '', label: '' },
 ];
 
-export default function UserPage() {
+export default function MqttSetPage() {
   
   const [aptSelectList, setAptSelectList] = useState([]);
   const [mqttSelectList, setMqttSelectList] = useState([]);

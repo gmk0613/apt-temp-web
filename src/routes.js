@@ -15,7 +15,7 @@ import DashboardAppPage from './views/dashboard/DashboardAppPage';
 import TempStatusPage from './views/tempStatus/TempStatusPage';
 import UserApprovePage from './views/userApprove/UserApprovePage';
 import UserMgmtPage from './views/userMgmt/UserMgmtPage';
-import OptionSetPage from './views/optionSet/OptionSetPage';
+import AptSetPage from './views/aptSet/AptSetPage';
 import ManagerMgmtPage from './views/managerMgmt/ManagerMgmtPage';
 import MqttSetPage from './views/mqttSet/MqttSetPage';
 
@@ -44,7 +44,7 @@ export default function Router() {
           <Route path="/tempStatus" element={<TempStatusPage />} />
           <Route path="/userMgmt" element={<UserMgmtPage />} />
           <Route path="/userApprove" element={<UserApprovePage />} />
-          <Route path="/optionSet" element={<OptionSetPage />} />
+          <Route path="/aptSet" element={<AptSetPage />} />
           <Route path="/mamagerMgmt" element={<ManagerMgmtPage />} />
           <Route path="/mqttSet" element={<MqttSetPage />} />
           <Route path="/app" element={<DashboardAppPage />} />
