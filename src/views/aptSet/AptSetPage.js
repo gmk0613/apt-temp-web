@@ -22,7 +22,7 @@ import {
   TableHead,
   TextField,
   FormControl,
-  Grid
+  Grid,
 } from '@mui/material';
 // components
 import Label from '../../components/label';
@@ -40,10 +40,12 @@ export default function AptSetPage() {
     aptNm: '',
     aptAddress: '',
     aptNumber: '',
-    aptDong: ''
+    aptDong: '',
+    floorNum: '',
+    hoNum: ''
   });
 
-  const { aptNm, aptAddress, aptNumber, aptDong } = inputs;
+  const { aptNm, aptAddress, aptNumber, aptDong, floorNum, hoNum } = inputs;
 
   const handleInputsChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +56,10 @@ export default function AptSetPage() {
   };
 
   const handleAptSave = (e) => {
+    console.log(e);
+  }
+
+  const handleAddTemplate = (e) => {
     console.log(e);
   }
 
@@ -107,81 +113,53 @@ export default function AptSetPage() {
                 </FormControl>
               </Grid>
             </Grid>
-            <Scrollbar>
+ 
+            <Grid container spacing={3} sx={{mt: 2}}>
               <TableContainer>
                 <Table>
                   <TableBody>
                     <TableRow hover tabIndex={-1}>
                       <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell>
-                        <FormControl>
-                          <TextField id="a" name="a" variant="outlined" size="small"/>
-                        </FormControl>
-                      </TableCell>
+                        1
+                      </TableCell> 
                     </TableRow>
-
                   </TableBody>
                 </Table>
               </TableContainer>
-            </Scrollbar>
-            <Grid sx={{mt: 2}} textAlign={'right'}>
+            </Grid>
+
+            <Grid sx={{mt: 2}} textAlign={"right"}>
               <Button variant="contained" onClick={handleAptSave}>
                 정보저장
               </Button>
             </Grid>
           </Card>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={3} lg={2}>층 수</Grid>
-            <Grid item xs={12} md={9} lg={10}>
-              <FormControl fullWidth>
-                <TextField id="aptNm" name="aptNm" variant="outlined" label="아파트 이름" value={aptNm} onChange={handleInputsChange}/>
-              </FormControl>
+
+          <Card sx={{p: 3}}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} lg={1}>층 수</Grid>
+              <Grid item xs={12} lg={4}>
+                <FormControl fullWidth>
+                  <TextField id="floorNum" name="floorNum" variant="outlined" value={floorNum} onChange={handleInputsChange}/>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} lg={1}>호 수</Grid>
+              <Grid item xs={12} lg={4}>
+                <FormControl fullWidth>
+                  <TextField id="hoNum" name="hoNum" variant="outlined" value={hoNum} onChange={handleInputsChange}/>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} lg={2} textAlign={'right'}>
+                <IconButton
+                  onClick={handleAddTemplate}
+                  sx={{mr: 1}}
+                  size='large'
+                >
+                  <Iconify icon="ic:baseline-plus" style={{width: '40px', height: '40px', color:'black'}}/>
+                </IconButton>
+              </Grid>
             </Grid>
-          </Grid>
+          </Card>
         </Stack>
       </Container>
     </>
