@@ -1,33 +1,20 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
+import {v4 as uuid} from 'uuid';
 // @mui
 import {
   Card,
-  Table,
   Stack,
-  Paper,
-  Avatar,
-  Button,
-  Popover,
-  Checkbox,
-  TableRow,
-  MenuItem,
-  TableBody,
-  TableCell,
   Container,
   Typography,
   IconButton,
-  TableContainer,
-  TablePagination,
-  TableHead,
   TextField,
   FormControl,
   Grid,
 } from '@mui/material';
 // components
-import Label from '../../components/label';
+import { AptListItem } from './component';
 import Iconify from '../../components/iconify';
-import Scrollbar from '../../components/scrollbar';
 // sections
 // import { } from './component';
 // mock
@@ -55,24 +42,17 @@ export default function AptSetPage() {
     });
   };
 
-  const handleAptSave = (e) => {
-    console.log(e);
-  }
-
   const handleAddTemplate = (e) => {
-    console.log(e);
-
     const newApt = {
+      id: uuid(),
+      access: false,
+      dong: '',
       floor: floorNum,
       ho: hoNum,
     };
 
     setAptList((prev) => [...prev, newApt]);
     setInputs({floorNum: '', hoNum: ''});
-  }
-
-  const handleDeleteTemplate = (e) => {
-    console.log(e);
   }
 
   return (
@@ -116,48 +96,18 @@ export default function AptSetPage() {
             </Grid>
           </Card>
 
-          
-          {aptList.map((apt) => {
-            console.log(apt);
-
-            return (
-              <Card sx={{p: 3}}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={1}>동</Grid>
-                  <Grid item xs={12} md={4}>
-                    <FormControl fullWidth>
-                      <TextField size='small' id="aptDong" name="aptDong" variant="outlined" label="Ex) 101"/>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} md={7} textAlign={'right'}>
-                    <Button size='small' color='error' variant="contained" onClick={handleDeleteTemplate}>
-                      삭제
-                    </Button>
-                  </Grid>
-                </Grid>
-    
-                <Grid container spacing={3} sx={{mt: 2}}>
-                  <TableContainer>
-                    <Table size="small">
-                      <TableBody>
-                        <TableRow hover tabIndex={-1}>
-                          <TableCell align='center'>
-                            {apt.floor} / {apt.ho}
-                          </TableCell> 
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Grid>
-
-                <Grid sx={{mt: 2}} textAlign={"right"}>
-                  <Button size='small' variant="contained" onClick={handleAptSave}>
-                    정보저장
-                  </Button>
-                </Grid>
-              </Card>
-            )
-          })}
+          {aptList.map((apt) => (
+            <AptListItem
+              key={apt.id}
+              id={apt.id}
+              access={apt.access}
+              dong={apt.dong}
+              floor={apt.floor}
+              ho={apt.ho}
+              aptList={aptList}
+              setAptList={setAptList}
+            />
+          ))}
           {aptList.length < 1 && (
             <Card sx={{p: 3, textAlign: 'center'}}>
               아파트를 등록해주세요.
