@@ -19,7 +19,7 @@ export default function AptListItem({ id, access, dong, floor, ho, aptList, setA
 
     const [aptDong, setAptDong] = useState(dong);
 
-    const handleDongChange = (e,) => {
+    const handleDongChange = (e) => {
       setAptDong(e.target.value);
     }
 
@@ -57,7 +57,7 @@ export default function AptListItem({ id, access, dong, floor, ho, aptList, setA
                 <Grid item xs={12} md={1}>동</Grid>
                 <Grid item xs={12} md={4}>
                     <FormControl fullWidth>
-                        <TextField size='small' name="aptDong" variant="outlined" label="Ex) 101" value={aptDong} onChange={handleDongChange}/>
+                        <TextField size='small' name="aptDong" variant="outlined" label="Ex) 101" value={aptDong||''} onChange={handleDongChange}/>
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} md={7} textAlign={'right'}>
@@ -72,6 +72,7 @@ export default function AptListItem({ id, access, dong, floor, ho, aptList, setA
                     <Table size="small">
                         <TableBody>
                             {rows.reverse().map((row) => {
+                                // eslint-disable-next-line
                                 return (
                                     <TableRow hover tabIndex={-1}>
                                         {cells.map((cell) => {

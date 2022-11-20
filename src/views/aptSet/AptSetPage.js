@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 // @mui
 import {
   Card,
@@ -72,7 +72,7 @@ export default function AptSetPage() {
               <Grid item xs={12} md={2}>아파트 이름</Grid>
               <Grid item xs={12} md={10}>
                 <FormControl fullWidth>
-                  <TextField id="aptNm" name="aptNm" variant="outlined" label="아파트 이름" value={aptNm} onChange={handleInputsChange}/>
+                  <TextField id="aptNm" name="aptNm" variant="outlined" value={aptNm} onChange={handleInputsChange}/>
                 </FormControl>
               </Grid>
             </Grid>
@@ -81,7 +81,7 @@ export default function AptSetPage() {
               <Grid item xs={12} md={2}>주소</Grid>
               <Grid item xs={12} md={10}>
                 <FormControl fullWidth>
-                  <TextField id="aptAddress" name="aptAddress" variant="outlined" label="주소" value={aptAddress} onChange={handleInputsChange}/>
+                  <TextField id="aptAddress" name="aptAddress" variant="outlined" value={aptAddress} onChange={handleInputsChange}/>
                 </FormControl>
               </Grid>
             </Grid>
@@ -90,7 +90,7 @@ export default function AptSetPage() {
               <Grid item xs={12} md={2}>대표 관리실 전화번호</Grid>
               <Grid item xs={12} md={10}>
                 <FormControl fullWidth>
-                  <TextField id="aptNumber" name="aptNumber" variant="outlined" label="대표 관리실 전화번호" value={aptNumber} onChange={handleInputsChange}/>
+                  <TextField id="aptNumber" name="aptNumber" variant="outlined" value={aptNumber} onChange={handleInputsChange}/>
                 </FormControl>
               </Grid>
             </Grid>
