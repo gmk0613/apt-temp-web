@@ -10,6 +10,9 @@ const users = [...Array(24)].map((_, index) => ({
   email: `userEmail${index}@test.com`,
   phoneNumber: `010-1234-5678`,
   role: `manager`,
+  dongHo: `${index}동 ${index}호`,
+  thmoSn: `S1L5SSB20`,
+  roomCount: `3`,
 }));
 
 export default users;

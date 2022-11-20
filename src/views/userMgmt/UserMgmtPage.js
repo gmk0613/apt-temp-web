@@ -27,19 +27,17 @@ import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar, UserDialog } from './component';
+import { UserListHead, UserListToolbar } from './component';
 // mock
 import USERLIST from '../../_mock/user';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'user_no', label: 'No', alignRight: false },
-  { id: 'user_id', label: 'ID', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
+  { id: 'dong_ho', label: '동 / 호수', alignRight: false },
   { id: 'user_name', label: 'Name', alignRight: false },
-  { id: 'email', label: 'E-mail', alignRight: false },
-  { id: 'phone_number', label: 'Phone', alignRight: false },
+  { id: 'thmo_sn', label: '보일러 SN', alignRight: false },
+  { id: 'room_count', label: '방 개수', alignRight: false },
   { id: '' },
 ];
 
@@ -122,16 +120,7 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const modifyUser = () => {
-    console.log('test');
-    setDialog(true);
-  };
-
   const deleteUser = () => {};
-
-  const closeDialog = () => {
-    setDialog(false);
-  };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
@@ -166,29 +155,18 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { userNo, userId, userName, email, phoneNumber, role } = row;
+                    const { dongHo, userName, thmoSn, roomCount } = row;
                     const selectedUser = selected.indexOf(userName) !== -1;
 
                     return (
-                      <TableRow hover key={userNo} tabIndex={-1} selected={selectedUser}>
-                        <TableCell component="th" scope="row" padding="none" align="center">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            {/* <Avatar alt={id} src={avatarUrl} /> */}
-                            {/* <Typography variant="subtitle2" noWrap> */}
-                            {userNo}
-                            {/* </Typography> */}
-                          </Stack>
+                      <TableRow hover key={dongHo} tabIndex={-1} selected={selectedUser}>
+                        <TableCell component="th" align="left">
+                          {dongHo}
                         </TableCell>
 
-                        <TableCell align="left">{userId}</TableCell>
-                        <TableCell align="left">
-                          <Label>{role}</Label>
-                        </TableCell>
                         <TableCell align="left">{userName}</TableCell>
-
-                        <TableCell align="left">{email}</TableCell>
-
-                        <TableCell align="left">{phoneNumber}</TableCell>
+                        <TableCell align="left">{thmoSn}</TableCell>
+                        <TableCell align="left">{roomCount}</TableCell>
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={(e) => handleOpenMenu(e, row)}>
@@ -244,8 +222,6 @@ export default function UserPage() {
         </Card>
       </Container>
 
-      <UserDialog dialog={dialog} user={user} closeDialog={closeDialog} />
-
       <Popover
         open={Boolean(open)}
         anchorEl={open}
@@ -264,11 +240,6 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} onClick={modifyUser} />
-          Edit
-        </MenuItem>
-
         <MenuItem sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} onClick={deleteUser} />
           Delete

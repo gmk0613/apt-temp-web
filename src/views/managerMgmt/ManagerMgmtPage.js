@@ -11,7 +11,7 @@ import {
   Avatar,
   Button,
   Popover,
-  Checkbox,
+  Grid,
   TableRow,
   MenuItem,
   TableBody,
@@ -27,7 +27,7 @@ import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
 // sections
-import { ManagerListHead, ManagerListToolbar } from './component';
+import { ManagerListHead, ManagerListToolbar, ManagerDialog } from './component';
 // mock
 import MANAGERLIST from '../../_mock/manager';
 
@@ -89,9 +89,16 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
+  const [dialog, setDialog] = useState(false);
+  const [isCreate, setIsCreate] = useState(false);
+
+  const [manager, setManager] = useState({
+    userId: '',
+    userName: '',
+    email: '',
+    phoneNumber: '',
+    role: '',
+  });
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -117,6 +124,40 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+  const handleOpenMenu = (event, row) => {
+    console.log('row');
+    console.log(row);
+    setManager(row);
+    console.log('manager');
+    console.log(manager);
+    setOpen(event.currentTarget);
+  };
+
+  const modifyManager = () => {
+    console.log('manager1');
+    console.log(manager);
+    setIsCreate(false);
+    setDialog(true);
+    console.log('manager2');
+    console.log(manager);
+  };
+
+  const createManager = () => {
+    setManager({
+      userId: '',
+      userName: '',
+      email: '',
+      phoneNumber: '',
+      role: 'manager',
+    });
+    setIsCreate(true);
+    setDialog(true);
+  };
+
+  const closeDialog = () => {
+    setDialog(false);
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - MANAGERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(MANAGERLIST, getComparator(order, orderBy), filterName);
@@ -135,6 +176,11 @@ export default function UserPage() {
             Manager
           </Typography>
         </Stack>
+        <Grid sx={{ mb: 2 }} textAlign={'right'}>
+          <Button variant="contained" onClick={createManager}>
+            Manager 추가
+          </Button>
+        </Grid>
 
         <Card>
           <ManagerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
@@ -155,12 +201,9 @@ export default function UserPage() {
 
                     return (
                       <TableRow hover key={userNo} tabIndex={-1} selected={selectedUser}>
-                        <TableCell component="th" scope="row" padding="none" align="center">
+                        <TableCell component="th" scope="row" align="center">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            {/* <Avatar alt={id} src={avatarUrl} /> */}
-                            {/* <Typography variant="subtitle2" noWrap> */}
                             {userNo}
-                            {/* </Typography> */}
                           </Stack>
                         </TableCell>
 
@@ -175,7 +218,7 @@ export default function UserPage() {
                         <TableCell align="left">{phoneNumber}</TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                          <IconButton size="large" color="inherit" onClick={(e) => handleOpenMenu(e, row)}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -228,6 +271,8 @@ export default function UserPage() {
         </Card>
       </Container>
 
+      <ManagerDialog dialog={dialog} manager={manager} closeDialog={closeDialog} isCreate={isCreate} />
+
       <Popover
         open={Boolean(open)}
         anchorEl={open}
@@ -246,7 +291,7 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem onClick={modifyManager}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
