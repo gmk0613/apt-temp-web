@@ -1,33 +1,58 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 // @mui
-import {
-  Card,
-  Table,
-  Stack,
-  Paper,
-  Avatar,
-  Button,
-  Popover,
-  Checkbox,
-  TableRow,
-  MenuItem,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  IconButton,
-  TableContainer,
-  TablePagination,
-} from '@mui/material';
-// components
-import Label from '../../components/label';
-import Iconify from '../../components/iconify';
-import Scrollbar from '../../components/scrollbar';
+import { Card, Grid, Stack, FormControl, TextField, Button, Container, Typography } from '@mui/material';
+
 // sections
- import {  } from './component';
 // mock
-import USERLIST from '../../_mock/user';
+
+import { DatePicker, Space } from 'antd';
+import dayjs from 'dayjs';
+
+import { RoomListItem } from './component';
+
+const { RangePicker } = DatePicker;
+const onChange = (date) => {
+  if (date) {
+    console.log('Date: ', date);
+  } else {
+    console.log('Clear');
+  }
+};
+const onRangeChange = (dates, dateStrings) => {
+  if (dates) {
+    console.log('From: ', dates[0], ', to: ', dates[1]);
+    console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+  } else {
+    console.log('Clear');
+  }
+};
+const rangePresets = [
+  {
+    label: 'Last 30 Minutes',
+    value: [dayjs().add(-30, 'm'), dayjs()],
+  },
+  {
+    label: 'Last 1 Hours',
+    value: [dayjs().add(-1, 'h'), dayjs()],
+  },
+  {
+    label: 'Last 2 Hours',
+    value: [dayjs().add(-2, 'h'), dayjs()],
+  },
+  {
+    label: 'Last 6 Hours',
+    value: [dayjs().add(-6, 'h'), dayjs()],
+  },
+  {
+    label: 'Last 24 Hours',
+    value: [dayjs().add(-24, 'h'), dayjs()],
+  },
+  {
+    label: 'Last 7 Days',
+    value: [dayjs().add(-7, 'd'), dayjs()],
+  },
+];
 
 // ----------------------------------------------------------------------
 
@@ -42,112 +67,115 @@ const TABLE_HEAD = [
 
 // ----------------------------------------------------------------------
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    const newArray = array.filter((_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-    return newArray;
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
-
 export default function UserPage() {
-  const [open, setOpen] = useState(null);
+  const [inputs, setInputs] = useState({
+    dong: '',
+    ho: '',
+    startTime: '',
+    endTIme: '',
+  });
 
-  const [page, setPage] = useState(0);
+  const { dong, ho, startTime, endtIme } = inputs;
 
-  const [order, setOrder] = useState('asc');
-
-  const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState('name');
-
-  const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
+  const handleInputsChange = (e) => {
+    const { name, value } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
   };
 
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
+  const roomDataList = [
+    { id: 1, roomName: '거실', temp: 30, setTemp: 30, data: [], lastUpdateTime: '2022-11-24 04:13:39' },
+    { id: 2, roomName: '방1', temp: 30, setTemp: 30, data: [], lastUpdateTime: '2022-11-24 04:13:39' },
+    { id: 3, roomName: '방2', temp: 30, setTemp: 30, data: [], lastUpdateTime: '2022-11-24 04:13:39' },
+    { id: 4, roomName: '방3', temp: 30, setTemp: 30, data: [], lastUpdateTime: '2022-11-24 04:13:39' },
+    { id: 5, roomName: '화장실', temp: 30, setTemp: 30, data: [], lastUpdateTime: '2022-11-24 04:13:39' },
+  ];
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && !!filterName;
+  const search = () => {};
 
   return (
     <>
-      TempStatus
+      <Helmet>
+        <title> 온도 현황 </title>
+      </Helmet>
+      <Container>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Typography variant="h4" gutterBottom>
+            온도 현황
+          </Typography>
+        </Stack>
+        <Stack spacing={3} sx={{ pb: 3 }}>
+          <Card sx={{ p: 3 }}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={1}>
+                동
+              </Grid>
+              <Grid item xs={12} md={2}>
+                <FormControl fullWidth>
+                  <TextField
+                    id="dong"
+                    name="dong"
+                    variant="outlined"
+                    label="동"
+                    value={dong}
+                    onChange={handleInputsChange}
+                    size="small"
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={1}>
+                호수
+              </Grid>
+              <Grid item xs={12} md={2}>
+                <FormControl fullWidth>
+                  <TextField
+                    id="ho"
+                    name="ho"
+                    variant="outlined"
+                    label="호수"
+                    value={ho}
+                    onChange={handleInputsChange}
+                    size="small"
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={1}>
+                기간
+              </Grid>
+              <Grid item xs={12} md={5}>
+                <RangePicker
+                  size="large"
+                  presets={rangePresets}
+                  showTime
+                  format="YYYY/MM/DD HH:mm:ss"
+                  onChange={onRangeChange}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid textAlign={'right'} sx={{ pt: 3 }}>
+              <Button variant="contained" onClick={search}>
+                검색
+              </Button>
+            </Grid>
+          </Card>
+        </Stack>
+        <Grid container spacing={3}>
+          {roomDataList.map((room) => (
+            <Grid item xs={12} md={4} key={room.id}>
+              <RoomListItem
+                roomName={room.roomName}
+                temp={room.temp}
+                setTemp={room.setTemp}
+                data={room.data}
+                lastUpdateTime={room.lastUpdateTime}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </>
   );
 }
