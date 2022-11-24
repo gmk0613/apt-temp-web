@@ -1,26 +1,20 @@
 import * as React from 'react';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-// @mui
+
 import {
   Box,
   Dialog,
   DialogTitle,
   DialogContent,
-  // DialogContentText,
   FormControl,
   Stack,
   Card,
   Grid,
   TextField,
-  Select,
-  MenuItem,
   DialogActions,
   Button,
 } from '@mui/material';
-import userApproves from 'src/_mock/userApprove';
-
-// ----------------------------------------------------------------------
 
 UserDialog.propTypes = {
   dialog: PropTypes.bool,
@@ -133,26 +127,13 @@ export default function UserDialog({ dialog, manager, isCreate, closeDialog }) {
                     </FormControl>
                   </Grid>
                 </Grid>
-                <Grid container spacing={3} sx={{ mt: 2 }}>
-                  <Grid item xs={12} md={2}>
-                    role
-                  </Grid>
-                  <Grid item xs={12} md={10}>
-                    <FormControl fullWidth>
-                      <Select id="role" name="role" value={inputs.role} onChange={handleInputsChange}>
-                        <MenuItem value={'manager'}>Manager</MenuItem>
-                        <MenuItem value={'super_admin'}>Super Admin</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
               </Card>
             </Stack>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeDialog}>Close</Button>
-          <Button onClick={closeDialog}>save</Button>
+          <Button onClick={closeDialog}>저장</Button>
+          <Button onClick={closeDialog}>취소</Button>
         </DialogActions>
       </Dialog>
     </>

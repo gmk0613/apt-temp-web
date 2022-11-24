@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useState } from 'react';
 // @mui
 import {
@@ -8,10 +7,7 @@ import {
   Table,
   Stack,
   Paper,
-  Avatar,
-  Button,
   Popover,
-  Checkbox,
   TableRow,
   MenuItem,
   TableBody,
@@ -22,16 +18,13 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
-// components
-import Label from '../../components/label';
+
 import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
-// sections
-import { UserListHead, UserListToolbar } from './component';
-// mock
-import USERLIST from '../../_mock/user';
 
-// ----------------------------------------------------------------------
+import { UserListHead, UserListToolbar } from './component';
+
+import USERLIST from '../../_mock/user';
 
 const TABLE_HEAD = [
   { id: 'dong_ho', label: '동 / 호수', alignRight: false },

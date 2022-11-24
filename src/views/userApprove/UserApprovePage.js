@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
-// @mui
+import apiHelper from 'src/utils/apiHelper';
+
 import {
   Card,
   Table,
@@ -16,16 +17,10 @@ import {
   TablePagination,
 } from '@mui/material';
 
-import apiHelper from 'src/utils/apiHelper';
-
-// components
-import Label from '../../components/label';
-import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
-// sections
+
 import { UserListHead, UserListToolbar } from './component';
 
-// mock
 import USERLIST from '../../_mock/userApprove';
 
 const TABLE_HEAD = [
@@ -178,7 +173,7 @@ export default function UserApprovePage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            결과를 ㅣ찾을 수 없습니다
+                            결과를 찾을 수 없습니다.
                           </Typography>
 
                           <Typography variant="body2">

@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import apiHelper from 'src/utils/apiHelper';
-// @mui
+
 import {
   Card,
   Table,
@@ -22,13 +22,10 @@ import {
   TableHead,
 } from '@mui/material';
 
-// mock
+
 import mqttLists from 'src/_mock/mqttList';
 
-// components
 import Scrollbar from '../../components/scrollbar';
-// sections
-// import { } from './component';
 
 const aptSelectListMock = [
   { label: 'AptA', value: 'AptA_v'},
@@ -51,10 +48,12 @@ export default function MqttSetPage() {
   
   const [aptSelectList, setAptSelectList] = useState([]);
   const [mqttSelectList, setMqttSelectList] = useState([]);
+
   const [selects, setSelects] = useState({
     apt: '',
     mqtt: ''
   });
+
   const [inputs, setInputs] = useState({
     mqttIp: '',
     mqttPort: ''
