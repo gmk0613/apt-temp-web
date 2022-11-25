@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import { filter } from 'lodash';
 import { useState } from 'react';
 import apiHelper from 'src/utils/apiHelper';
 
@@ -281,12 +280,12 @@ export default function UserPage() {
       >
         <MenuItem onClick={modifyManager}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
+          수정
         </MenuItem>
 
         <MenuItem sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
+          삭제
         </MenuItem>
       </Popover>
     </>

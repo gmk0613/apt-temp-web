@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
-import { filter } from 'lodash';
 import { useState } from 'react';
-// @mui
+import apiHelper from 'src/utils/apiHelper';
+
 import {
   Card,
   Table,
@@ -27,10 +27,10 @@ import { UserListHead, UserListToolbar } from './component';
 import USERLIST from '../../_mock/user';
 
 const TABLE_HEAD = [
-  { id: 'dong_ho', label: '동 / 호수', alignRight: false },
-  { id: 'user_name', label: 'Name', alignRight: false },
-  { id: 'thmo_sn', label: '보일러 SN', alignRight: false },
-  { id: 'room_count', label: '방 개수', alignRight: false },
+  { id: 'dongHo', label: '동 / 호수', alignRight: false },
+  { id: 'userName', label: 'Name', alignRight: false },
+  { id: 'thmoSn', label: '보일러 SN', alignRight: false },
+  { id: 'roomCount', label: '방 개수', alignRight: false },
   { id: '' },
 ];
 
@@ -60,29 +60,21 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return array.filter((_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function UserPage() {
   const [open, setOpen] = useState(null);
-
   const [dialog, setDialog] = useState(false);
-
   const [user, setUser] = useState(null);
-
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleOpenMenu = (event, user) => {
     setUser(user);
@@ -124,13 +116,13 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> 사용자 관리 </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            사용자 관리
           </Typography>
         </Stack>
 
@@ -204,7 +196,7 @@ export default function UserPage() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 25]}
             component="div"
             count={USERLIST.length}
             rowsPerPage={rowsPerPage}

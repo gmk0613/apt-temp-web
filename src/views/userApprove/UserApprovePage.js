@@ -68,10 +68,10 @@ export default function UserApprovePage() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [userList, setUserList] = useState(USERLIST);
+  const [userList, setUserList] = useState([]);
 
   const getUserList = async () => {
-    const result = await apiHelper.get("/userList");
+    // const result = await apiHelper.get("/userList");
     console.log("getUserList", USERLIST);
     setUserList(USERLIST);
   }
