@@ -53,7 +53,7 @@ export default function LoginPage() {
           refreshToken: 'rToken',
         },
       });
-      appHistory.push('/app');
+      appHistory.push('/tempStatus');
     }
   }, [login]);
 

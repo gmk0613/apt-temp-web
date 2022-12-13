@@ -34,7 +34,7 @@ export default function AptListItem({ roomName, temp, setTemp, data, lastUpdateT
               ]}
               chartData={[
                 {
-                  name: 'Team B',
+                  name: '온도',
                   type: 'area',
                   fill: 'gradient',
                   data: [44, 55, 41, 67, 22, 43],

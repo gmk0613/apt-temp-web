@@ -36,36 +36,21 @@ const navConfig = [
     path: '/mqttSet',
     icon: icon('ic_signal'),
   },
-  {
-    title: 'dashboard/삭제',
-    path: '/app',
-    icon: icon('ic_analytics'),
-  },
-  {
-    title: 'user/삭제',
-    path: '/user',
-    icon: icon('ic_user'),
-  },
-  {
-    title: 'product/삭제',
-    path: '/products',
-    icon: icon('ic_cart'),
-  },
-  {
-    title: 'blog/삭제',
-    path: '/blog',
-    icon: icon('ic_blog'),
-  },
-  {
-    title: 'login/삭제',
-    path: '/login',
-    icon: icon('ic_lock'),
-  },
-  {
-    title: 'Not found/삭제',
-    path: '/404',
-    icon: icon('ic_disabled'),
-  },
+  // {
+  //   title: 'dashboard/삭제',
+  //   path: '/app',
+  //   icon: icon('ic_analytics'),
+  // },
+  // {
+  //   title: 'product/삭제',
+  //   path: '/products',
+  //   icon: icon('ic_cart'),
+  // },
+  // {
+  //   title: 'blog/삭제',
+  //   path: '/blog',
+  //   icon: icon('ic_blog'),
+  // },
 ];
 
 export default navConfig;

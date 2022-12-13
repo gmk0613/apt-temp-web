@@ -6,7 +6,6 @@ import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 //
 import BlogPage from './views/blog/BlogPage';
-import UserPage from './views/user/UserPage';
 import LoginPage from './views/account/LoginPage';
 import Page404 from './views/error/Page404';
 import ProductsPage from './views/products/ProductsPage';
@@ -47,10 +46,9 @@ export default function Router() {
           <Route path="/aptSet" element={<AptSetPage />} />
           <Route path="/mamagerMgmt" element={<ManagerMgmtPage />} />
           <Route path="/mqttSet" element={<MqttSetPage />} />
-          <Route path="/app" element={<DashboardAppPage />} />
-          <Route path="/user" element={<UserPage />} />
+          {/* <Route path="/app" element={<DashboardAppPage />} />
           <Route path="/products" element={<ProductsPage />} />
-          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog" element={<BlogPage />} /> */}
         </Route>
         <Route element={<SimpleLayout />}>
           <Route element={<LoginPage />} index />
