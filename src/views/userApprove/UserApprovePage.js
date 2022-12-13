@@ -65,7 +65,7 @@ function applySortFilter(array, comparator, query) {
 export default function UserApprovePage() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('userName');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [userList, setUserList] = useState([]);
