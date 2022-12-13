@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import apiHelper from 'src/utils/apiHelper';
 
 import {
@@ -7,19 +7,16 @@ import {
   Table,
   Stack,
   Paper,
-  Popover,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
   TablePagination,
+  Button,
 } from '@mui/material';
 
-import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
 
 import { UserListHead, UserListToolbar } from './component';
@@ -28,13 +25,11 @@ import USERLIST from '../../_mock/user';
 
 const TABLE_HEAD = [
   { id: 'dongHo', label: '동 / 호수', alignRight: false },
-  { id: 'userName', label: 'Name', alignRight: false },
+  { id: 'userName', label: '이름', alignRight: false },
   { id: 'thmoSn', label: '보일러 SN', alignRight: false },
   { id: 'roomCount', label: '방 개수', alignRight: false },
   { id: '' },
 ];
-
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -60,30 +55,28 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return array.filter((_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return array.filter((_user) => _user.userName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
-  const [open, setOpen] = useState(null);
-  const [dialog, setDialog] = useState(false);
-  const [user, setUser] = useState(null);
+export default function UserMgmtPage() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
-  const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('userName');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [userList, setUserList] = useState([]);
 
-  const handleOpenMenu = (event, user) => {
-    setUser(user);
-    setOpen(event.currentTarget);
-  };
+  const getUserList = async () => {
+    // const result = await apiHelper.get("/userList");
+    console.log("getUserList", USERLIST);
+    setUserList(USERLIST);
+  }
 
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
+  useEffect(() => {
+    getUserList();
+  }, []); 
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -105,12 +98,17 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const deleteUser = () => {};
+  const handleDelUser = async (e, params) => {
+    console.log("params", params);
+    // 컨펌
+      // const res = await apiHelper.delete("/userDelete", {userNo: params.userNo});
+      // 정상인경우
+        const nUserList = userList.filter((v) => v.userNo !== params.userNo);
+        setUserList(nUserList);
+  }
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
@@ -127,7 +125,7 @@ export default function UserPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -140,23 +138,18 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { dongHo, userName, thmoSn, roomCount } = row;
-                    const selectedUser = selected.indexOf(userName) !== -1;
+                    const { userNo, dongHo, userName, thmoSn, roomCount } = row;
 
                     return (
-                      <TableRow hover key={dongHo} tabIndex={-1} selected={selectedUser}>
-                        <TableCell component="th" align="left">
-                          {dongHo}
-                        </TableCell>
-
+                      <TableRow hover key={userNo} tabIndex={-1}>
+                        <TableCell component="th" align="left">{dongHo}</TableCell>
                         <TableCell align="left">{userName}</TableCell>
                         <TableCell align="left">{thmoSn}</TableCell>
                         <TableCell align="left">{roomCount}</TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(e) => handleOpenMenu(e, row)}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
+                        <TableCell align="center">
+                          <Button variant="contained" color="error" onClick={(e) => handleDelUser(e, row)}>
+                            삭제
+                          </Button>
                         </TableCell>
                       </TableRow>
                     );
@@ -178,13 +171,12 @@ export default function UserPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            결과를 찾을 수 없습니다.
                           </Typography>
 
                           <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
+                            <strong>&quot;{filterName}&quot;</strong> 에 대한 결과가 없습니다.
+                            <br /> 입력한 값을 확인해주세요.
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -198,7 +190,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={userList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -206,30 +198,6 @@ export default function UserPage() {
           />
         </Card>
       </Container>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} onClick={deleteUser} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }
